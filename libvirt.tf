@@ -2,7 +2,7 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
-resource "libvirt_volume" "centosvm" {
+resource "libvirt_volume" "centos-test" {
   name   = "centos-test"
   pool   = "centosvm"
   source = "/home/matthew/Desktop/Terraform/CentOS-7-x86_64-GenericCloud-2009.qcow2"
@@ -43,8 +43,8 @@ resource "libvirt_domain" "domain-ubuntu" {
   cloudinit = libvirt_cloudinit_disk.commoninit.id
 
   network_interface {
-    network_id   = libvirt_network.vm_network.id
-    network_name = "vm_network"
+    network_id   = libvirt_network.routed.id
+    network_name = "routed"
   }
 
   # IMPORTANT
@@ -63,7 +63,7 @@ resource "libvirt_domain" "domain-ubuntu" {
   }
 
   disk {
-    volume_id = libvirt_volume.ubuntu-qcow2.id
+    volume_id = libvirt_volume.centos-test.id
   }
 
   graphics {
