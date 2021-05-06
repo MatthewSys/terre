@@ -1,3 +1,14 @@
+
+terraform {
+  required_version = ">= 0.13"
+  required_providers {
+    libvirt = {
+      source  = "dmacvicar/libvirt"
+      version = "0.6.3"
+    }
+  }
+}
+
 provider "libvirt" {
   uri = "qemu:///system"
 }
@@ -34,9 +45,8 @@ data "template_file" "network_config" {
 }
 
 
-# Create the machine
-resource "libvirt_domain" "domain-ubuntu" {
-  name   = "ubuntu-terraform"
+resource "libvirt_domain" "domain-centos" {
+  name   = "centos-terraform"
   memory = "512"
   vcpu   = 1
 
@@ -47,9 +57,7 @@ resource "libvirt_domain" "domain-ubuntu" {
     network_name = "routed"
   }
 
-  # IMPORTANT
-  # Ubuntu can hang is a isa-serial is not present at boot time.
-  # If you find your CPU 100% and never is available this is why
+
   console {
     type        = "pty"
     target_port = "0"
